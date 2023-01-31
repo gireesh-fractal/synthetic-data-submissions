@@ -1,5 +1,6 @@
 import math
 import pandas as pd
+from .constants import planet_data
 
 def orbital_period_2_angular_velocity(orbital_period_days):
     return 2*math.pi/orbital_period_days
@@ -33,4 +34,17 @@ def generate_distances_for_years(num_years,
                  for t_x in t]
     distances_df = pd.DataFrame({'time_since_start':t,
                                  'interplanetary_distance':distances})
+    return distances_df
+
+def generate_3_planet_distances_for_years(planet_config,
+                                          planet_parameters = planet_data):
+    anchor_planet = planet_config['anchor_planet']
+    other_planets = planet_config['other_planets']
+    t = None
+    other_planet_distances = []
+    sum_other_distances = None
+    distances_df = pd.DataFrame({'time_since_start': t,
+                                 f'inteplanetary_distance_{other_planets[0]}_2_{anchor_planet}': other_planet_distances[0],
+                                 f'inteplanetary_distance_{other_planets[1]}_2_{anchor_planet}': other_planet_distances[1],
+                                 f'sum_other_planets_2_{anchor_planet}': sum_other_distances})
     return distances_df
