@@ -9,6 +9,6 @@ planet_data = {
         },
         'mars': {
             'orbital_period_days': 204.2,
-            'orbital_radius_km': 686.9
+            'orbital_radius_km': 686.9e6
         }
     }
