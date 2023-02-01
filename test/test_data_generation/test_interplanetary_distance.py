@@ -1,4 +1,5 @@
 import pytest
+import pandas as pd
 from data_generation.interplanetary_distance import (
     get_interplanetary_distance,
     generate_distances_for_years
@@ -33,3 +34,4 @@ def test_generation(get_planet_parameters,num_years):
     received_length = len(generated_distances)
     expected_length = num_years*365 + int(num_years/4)
     assert received_length == expected_length
+    assert type(generated_distances) == pd.DataFrame
