@@ -58,7 +58,8 @@ def test_3_planet_distances(num_years,
                             get_planet_parameters):
     anchor_planet = planet_config['anchor_planet']
     other_planets = planet_config['other_planets']
-    generated_distances = generate_3_planet_distances_for_years(planet_config,
+    generated_distances = generate_3_planet_distances_for_years(num_years,
+                                                                planet_config,
                                                                 planet_parameters = get_planet_parameters)
     assert type(generated_distances) == pd.DataFrame
     expected_columns = ['time_since_start',
@@ -67,3 +68,6 @@ def test_3_planet_distances(num_years,
                         f'sum_other_planets_2_{anchor_planet}']
     assert expected_columns == generated_distances.columns.to_list()
     assert not(any(generated_distances[c] is None for c in expected_columns))
+    received_length = len(generated_distances)
+    expected_length = num_years*365 + int(num_years/4)
+    assert received_length == expected_length
