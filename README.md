@@ -23,3 +23,9 @@ My assignment submissions for Dr. Vincent Granville's course on Synthetic Data, 
 - Future work if time permits:
   - Modularize the interpolate function so it integrates with data generation functions more intuitively
   - Pull the visualization layer into the streamlit app instead of in the script
+  
+## Exercise 2.1.3
+- Refer to [issue spec](https://github.com/gireesh-fractal/synthetic-data-submissions/issues/3) for task description
+- The periodicity of the minimum of the sum seems to around 2350 days by visual inspection of the generated charts
+- The streamlit app now lets you chose an anchor planet and plot either the distance to another planet or plot distances of the 3 planet system
+- Also lets you play around with different time periods for generating the data

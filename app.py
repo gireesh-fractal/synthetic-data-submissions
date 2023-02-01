@@ -24,7 +24,8 @@ orbital_radius_km_planet_2 = planet_data[other_planet]['orbital_radius_km']
 orbital_period_days_planet_1 = planet_data[anchor_planet]['orbital_period_days']
 orbital_period_days_planet_2 = planet_data[other_planet]['orbital_period_days']
 
-num_years = 10
+num_years = st.selectbox("Select the number of years",
+                         [10,20,30,40,50])
 
 if st.button("Generate Interplanetary Distance"):
 
