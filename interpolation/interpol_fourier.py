@@ -2,12 +2,16 @@ import numpy as np
 import mpmath
 import matplotlib as mpl
 from matplotlib import pyplot as plt
-from data_generation.interplanetary_distance import generate_distances_for_years
+from data_generation.interplanetary_distance import (
+    generate_distances_for_years,
+    generate_3_planet_distances_for_years
+)
+from data_generation.constants import planet_data
 
 # https://www.digitalocean.ie/Data/DownloadTideData
 
 mode = 'Data' # options: 'Data', 'Math.Bessel', 'Math.Zeta'
-data_type = 'planets'
+data_type = 'planets_3_body'
 
 #--- read data
 
@@ -29,33 +33,43 @@ if mode == 'Data':
             fields = string.split('\t')
             temp[t/t_unit] = float(fields[0])
             t = t + 1
-    elif data_type == 'planets':
-        planet_parameters = {
-            'earth': {
-                'orbital_period_days': 365.2,
-                'orbital_radius_km': 149.6e6
-            },
-            'venus': {
-                'orbital_period_days': 224.7,
-                'orbital_radius_km': 108.2e6
-            }
-        }
-        orbital_radius_km_planet_1 = planet_parameters['earth']['orbital_radius_km']
-        orbital_radius_km_planet_2 = planet_parameters['venus']['orbital_radius_km']
-        orbital_period_days_planet_1 = planet_parameters['earth']['orbital_period_days']
-        orbital_period_days_planet_2 = planet_parameters['venus']['orbital_period_days']
-
-        num_years = 10
-
-        planets_df = generate_distances_for_years(num_years,
-                                          orbital_radius_km_planet_1,
-                                          orbital_radius_km_planet_2,
-                                          orbital_period_days_planet_1,
-                                          orbital_period_days_planet_2)
+    elif data_type.startswith('planets'):
         # t/t_unit is an integer every t_unit observations (node)
-        t_unit = 32 # use 16 for ocean tides, 32 for planet data discussed in the classroom
-        planets_df['t_unit'] = planets_df['time_since_start']/t_unit
-        temp = planets_df[['t_unit','interplanetary_distance']].set_index('t_unit').to_dict()['interplanetary_distance']
+        t_unit = 32  # use 16 for ocean tides, 32 for planet data discussed in the classroom
+        anchor_planet = 'earth'
+        if data_type == 'planets':
+            other_planet = 'venue'
+            orbital_radius_km_planet_1 = planet_data[anchor_planet]['orbital_radius_km']
+            orbital_radius_km_planet_2 = planet_data[other_planet]['orbital_radius_km']
+            orbital_period_days_planet_1 = planet_data[anchor_planet]['orbital_period_days']
+            orbital_period_days_planet_2 = planet_data[other_planet]['orbital_period_days']
+
+            num_years = 10
+
+            planets_df = generate_distances_for_years(num_years,
+                                              orbital_radius_km_planet_1,
+                                              orbital_radius_km_planet_2,
+                                              orbital_period_days_planet_1,
+                                              orbital_period_days_planet_2)
+            planets_df['t_unit'] = planets_df['time_since_start']/t_unit
+            temp = planets_df[['t_unit','interplanetary_distance']].set_index('t_unit').to_dict()['interplanetary_distance']
+        else:
+            anchor_planet = 'earth'
+            other_planets = [p for p in planet_data.keys()
+                             if p != anchor_planet]
+
+            planet_config = {
+                'anchor_planet': anchor_planet,
+                'other_planets': other_planets
+            }
+            num_years = 20
+            g_t_df = generate_3_planet_distances_for_years(num_years,
+                                                           planet_config)
+            g_t_df['t_unit'] = g_t_df['time_since_start']/t_unit
+            temp = g_t_df[['t_unit',
+                           'sum_other_planets_2_earth']].set_index('t_unit').to_dict()['sum_other_planets_2_earth']
+
+
     nobs = len(temp)
 else:
     t_unit = 16
@@ -137,6 +151,8 @@ if data_type == 'types':
     OUT = open(".data/interpol_tides_Dublin.txt","w")
 elif data_type == 'planets':
     OUT = open(f".data/interpol_planets_venus_earth_n-{n}_tunit-{t_unit}.txt", "w")
+elif data_type == 'planets_3_body':
+    OUT = open(f".data/interpol_other_planets_vs_earth_n-{n}_tunit-{t_unit}.txt", "w")
 else:
     print('Not implemented')
 
@@ -174,6 +190,8 @@ if data_type == 'tides':
     plt.savefig('.data/tides2.png', dpi=200)
 elif data_type == 'planets':
     plt.savefig(f'.data/planets_venus_earth_n-{n}_tunit-{t_unit}.png', dpi=200)
+elif data_type == 'planets_3_body':
+    plt.savefig(f'.data/other_planets_vs_earth_n-{n}_tunit-{t_unit}.png', dpi=200)
 else:
     print("Not Implemented")
 plt.show()

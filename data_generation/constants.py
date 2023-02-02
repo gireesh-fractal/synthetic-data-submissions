@@ -8,7 +8,11 @@ planet_data = {
             'orbital_radius_km': 108.2e6
         },
         'mars': {
-            'orbital_period_days': 204.2,
-            'orbital_radius_km': 686.9e6
+            'orbital_period_days': 687.0,
+            'orbital_radius_km': 228.0e6
+        },
+        'jupiter': {
+            'orbital_period_days': 4331.0,
+            'orbital_radius_km': 778.5e6
         }
     }
