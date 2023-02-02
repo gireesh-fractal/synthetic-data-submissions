@@ -29,3 +29,10 @@ My assignment submissions for Dr. Vincent Granville's course on Synthetic Data, 
 - The periodicity of the minimum of the sum seems to around 2350 days by visual inspection of the generated charts
 - The streamlit app now lets you chose an anchor planet and plot either the distance to another planet or plot distances of the 3 planet system
 - Also lets you play around with different time periods for generating the data
+
+## Exercise 2.1.4
+- Refer to [issue spec](https://github.com/gireesh-fractal/synthetic-data-submissions/issues/6) for task description
+- The periodicity of g(t):
+    - For Venus, Earth, Mars: around 6.4 years
+    - For Venus, Earth, Jupiter: around 3.5 years
+    - Not sure why the minima seems to appear so soon - maybe need to check numerically rather than visually 

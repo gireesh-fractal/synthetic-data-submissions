@@ -56,7 +56,7 @@ if mode == 'Data':
         else:
             anchor_planet = 'earth'
             other_planets = [p for p in planet_data.keys()
-                             if p != anchor_planet]
+                             if p != anchor_planet][:2]
 
             planet_config = {
                 'anchor_planet': anchor_planet,
@@ -152,7 +152,7 @@ if data_type == 'types':
 elif data_type == 'planets':
     OUT = open(f".data/interpol_planets_venus_earth_n-{n}_tunit-{t_unit}.txt", "w")
 elif data_type == 'planets_3_body':
-    OUT = open(f".data/interpol_other_planets_vs_earth_n-{n}_tunit-{t_unit}.txt", "w")
+    OUT = open(f".data/interpol_{other_planets}_vs_earth_n-{n}_tunit-{t_unit}.txt", "w")
 else:
     print('Not implemented')
 
@@ -191,7 +191,7 @@ if data_type == 'tides':
 elif data_type == 'planets':
     plt.savefig(f'.data/planets_venus_earth_n-{n}_tunit-{t_unit}.png', dpi=200)
 elif data_type == 'planets_3_body':
-    plt.savefig(f'.data/other_planets_vs_earth_n-{n}_tunit-{t_unit}.png', dpi=200)
+    plt.savefig(f'.data/{other_planets}_vs_earth_n-{n}_tunit-{t_unit}.png', dpi=200)
 else:
     print("Not Implemented")
 plt.show()
